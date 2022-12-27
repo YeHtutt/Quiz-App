@@ -82,7 +82,7 @@ let questions = [
 ];
 
 
-let rightQuestions =0; //right Question für Hochzählen mit 0 am Anfang initialisiert
+let rightQuestions = 0; //right Question für Hochzählen mit 0 am Anfang initialisiert
 let currentQuestion = 0; //Aktuelle Fragenummer für alle Fragen hochzählen mit 0 am Anfang initialisiert
 
 let AUDIO_SUCCESS = new Audio('audio/congrats.mp3');
@@ -96,55 +96,72 @@ function init() { //Das Spiel initialisieren
 }
 
 
+/*********************************************************************************************************************************************************/
 function showQuestion() {
-    if (currentQuestion >= questions.length) { //Wenn Quiz beendet EndScreen wird angezeigt, sonst zeige die Fragen an
-
-        //Show End Screen
-        document.getElementById('endScreen').style = ''; //style: "displaynone" zu --> '' angezeigt, somit wird am Ende die Seite Endscreen angezeigt
-        document.getElementById('questionBody').style = 'display:none';
-        document.getElementById('amount-all-questions').innerHTML = questions.length; //zeigt unten alle Anzahl der Fragen an
-        document.getElementById('amount-of-right-questions').innerHTML = rightQuestions;
-        document.getElementById('header-image').src = 'img/well-done.jpg';
-        document.getElementById('endScreen').style = `padding: 0px`;
+    if (gameIsOver()) { //Wenn Quiz beendet EndScreen wird angezeigt 
+        showEndScreen();
     }
-    else {
-        //Show Questions
-        let percent = (currentQuestion+1)/questions.length;  //Fortschritt aktuelle Frage / alle Fragen
-        percent = Math.round(percent*100); //Fortschritt von Kommazahl auf Integer gerundet
-
-        document.getElementById('progress-bar').style = `width: ${percent}%;`;
-        document.getElementById('progress-bar').innerHTML = `${percent}%`;
-        console.log('Fortschritt:', percent);
-        
-        let question = questions[currentQuestion]; //wir gehen in dieses RisenArray rein und holen aktuelles Array raus
-
-        document.getElementById('questions-number').innerHTML = currentQuestion + 1; //der Mensch zählt von 1 und nicht von 0, daher die Addition1
-        document.getElementById('questiontext').innerHTML = question['question']; //HTML innen von QuizFrage wird mit JSON Array Frage-String geladen
-        document.getElementById('answer_1').innerHTML = question['answer_1']; //HTML innen von QuizFrage wird mit JSON Array Antwort-String geladen
-        document.getElementById('answer_2').innerHTML = question['answer_2']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
-        document.getElementById('answer_3').innerHTML = question['answer_3']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
-        document.getElementById('answer_4').innerHTML = question['answer_4']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
+    else { //sonst zeigt die QuizFragen an
+        updateProgressBar();
+        showupdateToNextQuestion();
     }
 }
+
+function gameIsOver() {
+    return currentQuestion >= questions.length; //aus der Funktion kommt die Validierung des Spieles raus (wenn wahr:true, sonst: false)
+    //Wenn Aktuelle FrageIndex gleich groß wie JSON Array FragenIndex --> true 1, sonst false 0
+}
+
+function showEndScreen() {
+    //Show End Screen
+    document.getElementById('endScreen').style = ''; //style: "displaynone" zu --> '' angezeigt, somit wird am Ende die Seite Endscreen angezeigt
+    document.getElementById('questionBody').style = 'display:none';
+    document.getElementById('amount-all-questions').innerHTML = questions.length; //zeigt unten alle Anzahl der Fragen an
+    document.getElementById('amount-of-right-questions').innerHTML = rightQuestions;
+    document.getElementById('header-image').src = 'img/well-done.jpg';
+    document.getElementById('endScreen').style = `padding: 0px`;
+}
+
+function updateProgressBar() {
+    let percent = (currentQuestion + 1) / questions.length;  //Fortschritt aktuelle Frage / alle Fragen
+    percent = Math.round(percent * 100); //Fortschritt von Kommazahl auf Integer gerundet
+
+    document.getElementById('progress-bar').style = `width: ${percent}%;`;
+    document.getElementById('progress-bar').innerHTML = `${percent}%`;
+    console.log('Fortschritt:', percent);
+}
+
+function showupdateToNextQuestion() {
+    //Show Next Questions
+    let question = questions[currentQuestion]; //wir gehen in dieses RisenArray rein und holen aktuelles Array raus
+    document.getElementById('questions-number').innerHTML = currentQuestion + 1; //der Mensch zählt von 1 und nicht von 0, daher die Addition1
+    document.getElementById('questiontext').innerHTML = question['question']; //HTML innen von QuizFrage wird mit JSON Array Frage-String geladen
+    document.getElementById('answer_1').innerHTML = question['answer_1']; //HTML innen von QuizFrage wird mit JSON Array Antwort-String geladen
+    document.getElementById('answer_2').innerHTML = question['answer_2']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
+    document.getElementById('answer_3').innerHTML = question['answer_3']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
+    document.getElementById('answer_4').innerHTML = question['answer_4']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
+}
+
+/*********************************************************************************************************************************************************/
 
 function answer(selection) {
     let question = questions[currentQuestion];
     //console.log('Question is ', question['question'])
-    console.log('Selected answer is: ', selection)
-    let selectedQuestionNumber = selection.slice(-1); //get last character of string (answer_3 -->'3')
-    console.log('selectedQuestion in Char is: ', selectedQuestionNumber)
-    console.log('Right answer is: ', question['right_answer'])
-
+    //console.log('Selected answer is: ', selection)
+    let selectedQuestionNumber = selection.slice(-1); //get last character of string (answer_3 -->'3') 
+    //console.log('selectedQuestion in Char is: ', selectedQuestionNumber)
+    //console.log('Right answer is: ', question['right_answer'])
 
     let idOfRightAnswer = `answer_${question['right_answer']}`;
 
-    if (selectedQuestionNumber == question['right_answer']) { //Richtige Frage beantwortet
-        console.log('Richtige Antwort Wow!!')
+    if (selectedQuestionNumber == question['right_answer']) //Richtige Frage beantwortet
+    { 
+        //console.log('Richtige Antwort Wow!!')
         AUDIO_SUCCESS.play();
         document.getElementById(selection).parentNode.classList.add('bg-success'); //bei richtiger Antwort mit der ID-seine Eltern Container wird background zur grünen Farbe geändert
         rightQuestions++;
     } else {
-        console.log('Leider falsche Antwort!!')
+        //console.log('Leider falsche Antwort!!')
         document.getElementById(selection).parentNode.classList.add('bg-danger'); //bei falscher Antwort mit der ID-seine Eltern Container wird background zur rote Farbe geändert
         document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
         AUDIO_FAIL.play();
@@ -173,12 +190,12 @@ function resetAnswerButtons() {
 }
 
 
-function restartGame(){
+function restartGame() {
     document.getElementById('header-image').src = 'img/question-mark.jpg'; //Das Image wie beim Neustart des Spieles auf das QuizSeite Img geändert
     document.getElementById('endScreen').style = 'display:none'; //dann style: '' zu --> "displaynone" geändert, Endscreen Text wird nicht mehr angezeigt
     document.getElementById('questionBody').style = ''; //style QuestionBody: "displaynone" zu --> ''  geändert, QuestionBody(FragenSeite) wird damit wieder angezeigt
 
-    rightQuestions =0; //die Variablen wieder am Anfang 0 setzen, weil wir beim Fragen Hochzählen schon die Addition überschrieben haben
+    rightQuestions = 0; //die Variablen wieder am Anfang 0 setzen, weil wir beim Fragen Hochzählen schon die Addition überschrieben haben
     currentQuestion = 0; //die Variablen wieder am Anfang 0 setzen, weil wir beim Fragen Hochzählen schon die Addition überschrieben haben
     AUDIO_NEWGAME.play();
     init(); //Das Spiel wird wieder initialisiert bzw. neugestartet

@@ -55,6 +55,8 @@ body {
     padding-bottom: 32px;
 }
 
+
+/***************Responsive***********************************/
 @media(max-width:520px) {
     body {
         background-color: none;
@@ -72,3 +74,4 @@ body {
         font-size: 22px;
     }
 }
+/*************************************************************/
