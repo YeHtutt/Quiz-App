@@ -87,6 +87,7 @@ let currentQuestion = 0; //Aktuelle Fragenummer für alle Fragen hochzählen mit
 
 let AUDIO_SUCCESS = new Audio('audio/congrats.mp3');
 let AUDIO_FAIL = new Audio('audio/wrong.mp3');
+let AUDIO_NEWGAME = new Audio('audio/newgame.mp3');
 
 function init() { //Das Spiel initialisieren
     document.getElementById('all-questions').innerHTML = questions.length; //zeigt unten alle Anzahl der Fragen an
@@ -179,6 +180,6 @@ function restartGame(){
 
     rightQuestions =0; //die Variablen wieder am Anfang 0 setzen, weil wir beim Fragen Hochzählen schon die Addition überschrieben haben
     currentQuestion = 0; //die Variablen wieder am Anfang 0 setzen, weil wir beim Fragen Hochzählen schon die Addition überschrieben haben
+    AUDIO_NEWGAME.play();
     init(); //Das Spiel wird wieder initialisiert bzw. neugestartet
-
 }
