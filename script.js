@@ -85,7 +85,10 @@ let questions = [
 let rightQuestions =0; //right Question für Hochzählen mit 0 am Anfang initialisiert
 let currentQuestion = 0; //Aktuelle Fragenummer für alle Fragen hochzählen mit 0 am Anfang initialisiert
 
-function init() {
+let AUDIO_SUCCESS = new Audio('audio/congrats.mp3');
+let AUDIO_FAIL = new Audio('audio/wrong.mp3');
+
+function init() { //Das Spiel initialisieren
     document.getElementById('all-questions').innerHTML = questions.length; //zeigt unten alle Anzahl der Fragen an
 
     showQuestion();
@@ -96,7 +99,7 @@ function showQuestion() {
     if (currentQuestion >= questions.length) { //Wenn Quiz beendet EndScreen wird angezeigt, sonst zeige die Fragen an
 
         //Show End Screen
-        document.getElementById('endScreen').style = ''; //style: "displaynone" zu --> '' angezeigt, somit wird beim Endscreen diesem Container angezeigt
+        document.getElementById('endScreen').style = ''; //style: "displaynone" zu --> '' angezeigt, somit wird am Ende die Seite Endscreen angezeigt
         document.getElementById('questionBody').style = 'display:none';
         document.getElementById('amount-all-questions').innerHTML = questions.length; //zeigt unten alle Anzahl der Fragen an
         document.getElementById('amount-of-right-questions').innerHTML = rightQuestions;
@@ -136,12 +139,14 @@ function answer(selection) {
 
     if (selectedQuestionNumber == question['right_answer']) { //Richtige Frage beantwortet
         console.log('Richtige Antwort Wow!!')
+        AUDIO_SUCCESS.play();
         document.getElementById(selection).parentNode.classList.add('bg-success'); //bei richtiger Antwort mit der ID-seine Eltern Container wird background zur grünen Farbe geändert
         rightQuestions++;
     } else {
         console.log('Leider falsche Antwort!!')
         document.getElementById(selection).parentNode.classList.add('bg-danger'); //bei falscher Antwort mit der ID-seine Eltern Container wird background zur rote Farbe geändert
         document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
+        AUDIO_FAIL.play();
     }
     document.getElementById('next-button').disabled = false;
 }
@@ -164,4 +169,16 @@ function resetAnswerButtons() {
     document.getElementById('answer_3').parentNode.classList.remove('bg-success');
     document.getElementById('answer_4').parentNode.classList.remove('bg-danger');
     document.getElementById('answer_4').parentNode.classList.remove('bg-success');
+}
+
+
+function restartGame(){
+    document.getElementById('header-image').src = 'img/question-mark.jpg'; //Das Image wie beim Neustart des Spieles auf das QuizSeite Img geändert
+    document.getElementById('endScreen').style = 'display:none'; //dann style: '' zu --> "displaynone" geändert, Endscreen Text wird nicht mehr angezeigt
+    document.getElementById('questionBody').style = ''; //style QuestionBody: "displaynone" zu --> ''  geändert, QuestionBody(FragenSeite) wird damit wieder angezeigt
+
+    rightQuestions =0; //die Variablen wieder am Anfang 0 setzen, weil wir beim Fragen Hochzählen schon die Addition überschrieben haben
+    currentQuestion = 0; //die Variablen wieder am Anfang 0 setzen, weil wir beim Fragen Hochzählen schon die Addition überschrieben haben
+    init(); //Das Spiel wird wieder initialisiert bzw. neugestartet
+
 }
