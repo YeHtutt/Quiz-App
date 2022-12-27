@@ -66,7 +66,8 @@
                     <span>
                         <b>1</b> von <b id="all-questions">5</b> Fragen
                     </span>
-                    <button type="button" class="btn btn-primary">nächste Fragen</button>
+                    <!--button ist beim default disabled,erst nach dem ein Antwort ausgewählt wurde enabled (siehe in Function -answer()) -->
+                    <button type="button" class="btn btn-primary" id="next-button" onclick="nextQuestion()" disabled>nächste Fragen</button> 
                 </div>
 
             </div>
