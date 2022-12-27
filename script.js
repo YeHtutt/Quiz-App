@@ -52,9 +52,11 @@ function answer(selection) {
     console.log('Right answer is: ', question['right_answer'])
 
     if (selectedQuestionNumber == question['right_answer']) {
-        console.log('Richtige Antwort :D')
+        console.log('Richtige Antwort Wow!!')
+        document.getElementById(selection).parentNode.classList.add('bg-success'); //bei richtiger Antwort mit der ID-seine Eltern Container wird background zur grünen Farbe geändert
     } else {
-        console.log('Falsche Antwort :(')
+        console.log('Leider falsche Antwort!!')
+        document.getElementById(selection).parentNode.classList.add('bg-danger'); //bei falscher Antwort mit der ID-seine Eltern Container wird background zur rote Farbe geändert
     }
 }
 
