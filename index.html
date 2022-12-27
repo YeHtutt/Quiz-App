@@ -34,8 +34,25 @@
 
     <div class="container">
         <div class="card quiz-card">
-            <img src="img/question-mark.jpg" class="card-img-top">
-            <div class="card-body">
+            <img src="img/question-mark.jpg" id="header-image" class="card-img-top">
+
+
+            <div class="card-body" id="endScreen" style="display: none; ">
+                <!--hier mit Absicht html style display none hinzugefügt-->
+                <div class="endScreen-bg">
+                    <div class="text-center endScreenText-design">
+                        Quiz beendet!
+                    </div>
+
+                    <div class="text-center endScreenText-design">
+                        Du hast <b id="amount-of-right-questions">xxx</b> Fragen von <b
+                            id="amount-all-questions">xxx</b> richtig beantwortet.
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card-body" id="questionBody">
                 <h5 class="card-title" id="questiontext">Frage</h5>
 
                 <div class="card quiz-answer-card mb-2" onclick="answer('answer_1')">
@@ -64,10 +81,11 @@
 
                 <div class="question-footer">
                     <span>
-                        <b>1</b> von <b id="all-questions">5</b> Fragen
+                        <b id="questions-number">1</b> von <b id="all-questions">5</b> Fragen
                     </span>
                     <!--button ist beim default disabled,erst nach dem ein Antwort ausgewählt wurde enabled (siehe in Function -answer()) -->
-                    <button type="button" class="btn btn-primary" id="next-button" onclick="nextQuestion()" disabled>nächste Fragen</button> 
+                    <button type="button" class="btn btn-primary" id="next-button" onclick="nextQuestion()"
+                        disabled>nächste Fragen</button>
                 </div>
 
             </div>

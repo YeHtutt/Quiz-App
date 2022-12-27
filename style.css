@@ -30,3 +30,20 @@ body{
 .bg-success, .bg-danger{
     color: white;
 }
+
+.text-center{
+    text-align: center;
+}
+
+.endScreenText-design{
+    font-size: 30px;
+    padding-top: 40px;
+    padding-bottom:40px;
+    background-color: beige;
+    color: rgba(114, 108, 108, 1);
+}
+
+.endScreen-bg{
+    background-color: beige;
+}
+

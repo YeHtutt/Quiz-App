@@ -81,7 +81,9 @@ let questions = [
     },
 ];
 
-let currentQuestion = 0;
+
+let rightQuestions =0; //right Question für Hochzählen mit 0 am Anfang initialisiert
+let currentQuestion = 0; //Aktuelle Fragenummer für alle Fragen hochzählen mit 0 am Anfang initialisiert
 
 function init() {
     document.getElementById('all-questions').innerHTML = questions.length; //zeigt unten alle Anzahl der Fragen an
@@ -91,12 +93,26 @@ function init() {
 
 
 function showQuestion() {
-    let question = questions[currentQuestion]; //wir gehen in dieses RisenArray rein und holen aktuelles Array raus
-    document.getElementById('questiontext').innerHTML = question['question']; //HTML innen von QuizFrage wird mit JSON Array Frage-String geladen
-    document.getElementById('answer_1').innerHTML = question['answer_1']; //HTML innen von QuizFrage wird mit JSON Array Antwort-String geladen
-    document.getElementById('answer_2').innerHTML = question['answer_2']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
-    document.getElementById('answer_3').innerHTML = question['answer_3']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
-    document.getElementById('answer_4').innerHTML = question['answer_4']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
+    if (currentQuestion >= questions.length) { //Wenn Quiz beendet EndScreen wird angezeigt, sonst zeige die Fragen an
+
+        //TODO endScreen
+        document.getElementById('endScreen').style = ''; //style: "displaynone" zu --> '' angezeigt, somit wird beim Endscreen diesem Container angezeigt
+        document.getElementById('questionBody').style = 'display:none';
+        document.getElementById('amount-all-questions').innerHTML = questions.length; //zeigt unten alle Anzahl der Fragen an
+        document.getElementById('amount-of-right-questions').innerHTML = rightQuestions;
+        document.getElementById('header-image').src = 'img/well-done.jpg';
+        document.getElementById('endScreen').style = `padding: 0px`;
+    }
+    else {
+        let question = questions[currentQuestion]; //wir gehen in dieses RisenArray rein und holen aktuelles Array raus
+
+        document.getElementById('questions-number').innerHTML = currentQuestion + 1; //der Mensch zählt von 1 und nicht von 0, daher die Addition1
+        document.getElementById('questiontext').innerHTML = question['question']; //HTML innen von QuizFrage wird mit JSON Array Frage-String geladen
+        document.getElementById('answer_1').innerHTML = question['answer_1']; //HTML innen von QuizFrage wird mit JSON Array Antwort-String geladen
+        document.getElementById('answer_2').innerHTML = question['answer_2']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
+        document.getElementById('answer_3').innerHTML = question['answer_3']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
+        document.getElementById('answer_4').innerHTML = question['answer_4']; //HTML innen von QuizFrage wird mit JSON Array Antowrt-String geladen
+    }
 }
 
 function answer(selection) {
@@ -110,27 +126,28 @@ function answer(selection) {
 
     let idOfRightAnswer = `answer_${question['right_answer']}`;
 
-    if (selectedQuestionNumber == question['right_answer']) {
+    if (selectedQuestionNumber == question['right_answer']) { //Richtige Frage beantwortet
         console.log('Richtige Antwort Wow!!')
         document.getElementById(selection).parentNode.classList.add('bg-success'); //bei richtiger Antwort mit der ID-seine Eltern Container wird background zur grünen Farbe geändert
+        rightQuestions++;
     } else {
         console.log('Leider falsche Antwort!!')
         document.getElementById(selection).parentNode.classList.add('bg-danger'); //bei falscher Antwort mit der ID-seine Eltern Container wird background zur rote Farbe geändert
         document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
     }
-    document.getElementById('next-button').disabled =false;
+    document.getElementById('next-button').disabled = false;
 }
 
 
-function nextQuestion(){
+function nextQuestion() {
     currentQuestion++; // z.B. Variable von 0 auf 1 erhöhen
-    resetAnswerButtons();
     showQuestion();
-    document.getElementById('next-button').disabled =ture;
+    resetAnswerButtons();
+    document.getElementById('next-button').disabled = true;
 }
 
 //alle Antworten von Backgroud-Color entfernen
-function resetAnswerButtons(){  
+function resetAnswerButtons() {
     document.getElementById('answer_1').parentNode.classList.remove('bg-danger');
     document.getElementById('answer_1').parentNode.classList.remove('bg-success');
     document.getElementById('answer_2').parentNode.classList.remove('bg-danger');
