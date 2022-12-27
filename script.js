@@ -95,7 +95,7 @@ function init() {
 function showQuestion() {
     if (currentQuestion >= questions.length) { //Wenn Quiz beendet EndScreen wird angezeigt, sonst zeige die Fragen an
 
-        //TODO endScreen
+        //Show End Screen
         document.getElementById('endScreen').style = ''; //style: "displaynone" zu --> '' angezeigt, somit wird beim Endscreen diesem Container angezeigt
         document.getElementById('questionBody').style = 'display:none';
         document.getElementById('amount-all-questions').innerHTML = questions.length; //zeigt unten alle Anzahl der Fragen an
@@ -104,6 +104,14 @@ function showQuestion() {
         document.getElementById('endScreen').style = `padding: 0px`;
     }
     else {
+        //Show Questions
+        let percent = (currentQuestion+1)/questions.length;  //Fortschritt aktuelle Frage / alle Fragen
+        percent = Math.round(percent*100); //Fortschritt von Kommazahl auf Integer gerundet
+
+        document.getElementById('progress-bar').style = `width: ${percent}%;`;
+        document.getElementById('progress-bar').innerHTML = `${percent}%`;
+        console.log('Fortschritt:', percent);
+        
         let question = questions[currentQuestion]; //wir gehen in dieses RisenArray rein und holen aktuelles Array raus
 
         document.getElementById('questions-number').innerHTML = currentQuestion + 1; //der Mensch zählt von 1 und nicht von 0, daher die Addition1
